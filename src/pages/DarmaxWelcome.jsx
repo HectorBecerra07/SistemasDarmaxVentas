@@ -1,12 +1,14 @@
 import ThemeToggle from "../components/ThemeToggle";
-
+import NavbarDarmax from "../components/NavbarDarmax";
 
 const DarmaxWelcome = () => {
   return (
+  
     <div
       className="relative flex min-h-screen w-full flex-col items-center justify-center bg-light dark:bg-dark overflow-x-hidden font-display"
       style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
     >
+      <NavbarDarmax />
 
       {/* Toggle de tema */}
       <ThemeToggle />

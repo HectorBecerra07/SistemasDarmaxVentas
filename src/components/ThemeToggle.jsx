@@ -34,7 +34,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed top-4 right-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white/80 dark:bg-dark/80 shadow-lg border border-light/60 dark:border-white/20 hover:scale-105 transition-transform"
+      className="fixed bottom-4 right-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white/80 dark:bg-dark/80 shadow-lg border border-light/60 dark:border-white/20 hover:scale-105 transition-transform"
       aria-label="Cambiar tema"
     >
       {/* ☀️ / 🌙 según el tema */}
