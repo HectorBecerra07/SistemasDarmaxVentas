@@ -1,3 +1,6 @@
+import ThemeToggle from "../components/ThemeToggle";
+
+
 const DarmaxWelcome = () => {
   return (
     <div
@@ -5,11 +8,13 @@ const DarmaxWelcome = () => {
       style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
     >
 
+      {/* Toggle de tema */}
+      <ThemeToggle />
       {/* Fondo de color (sin imagen) */}
       <div className="absolute inset-0 z-0 h-full w-full bg-light dark:bg-dark" />
 
       {/* Card central */}
-      <div className="relative z-10 flex w-full max-w-md flex-col items-center rounded-xl bg-white/80 dark:bg-dark/50 p-6 shadow-2xl backdrop-blur-lg sm:p-8 md:p-12">
+      <div className="relative z-10 flex w-full max-w-md flex-col items-center rounded-xl bg-white/80 dark:bg-white/10 p-6 shadow-2xl backdrop-blur-lg sm:p-8 md:p-12">
         <div className="layout-content-container flex flex-col items-center w-full">
 
           {/* Logo */}
