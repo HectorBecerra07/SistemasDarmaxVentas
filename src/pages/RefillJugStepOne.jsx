@@ -80,19 +80,20 @@ const RefillJugStepOne = () => {
       step={1}
       totalSteps={4}
     >
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 p-6 mt-2">
-        {products.map((product) => (
-          <QuantityCard
-            key={product.id}
-            name={product.name}
-            imageUrl={product.imageUrl}
-            quantity={product.quantity}
-            featured={product.featured}
-            onIncrease={() => handleChangeQuantity(product.id, 1)}
-            onDecrease={() => handleChangeQuantity(product.id, -1)}
-          />
-        ))}
-      </div>
+  <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 p-6 mt-2">
+  {products.map((product) => (
+    <QuantityCard
+      key={product.id}
+      name={product.name}
+      imageUrl={product.imageUrl}
+      quantity={product.quantity}
+      featured={product.featured}
+      onIncrease={() => handleChangeQuantity(product.id, 1)}
+      onDecrease={() => handleChangeQuantity(product.id, -1)}
+    />
+  ))}
+</div>
+
 
       {/* Footer dentro del layout */}
       <footer className="mt-auto px-6 py-4">
