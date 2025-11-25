@@ -1,108 +1,132 @@
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
-import { PrismaClient } from './generated/prisma';
+import express from 'express';
+import cors from 'cors';
+import { prisma } from './lib/prisma.js';
 
-const prisma = new PrismaClient();
-const app = new Hono();
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 // API Endpoints
 
 // Get assigned orders for a driver
-app.get('/api/drivers/:driverId/orders', async (c) => {
-  const { driverId } = c.req.param();
-  const orders = await prisma.order.findMany({
-    where: {
-      driverId: driverId,
-      status: 'ASSIGNED',
-    },
-    include: {
-      customer: true,
-      items: {
-        include: {
-          product: true,
-        },
+app.get('/api/drivers/:driverId/orders', async (req, res) => {
+  const { driverId } = req.params;
+  try {
+    const orders = await prisma.order.findMany({
+      where: {
+        driverId: driverId,
+        status: 'ASSIGNED',
       },
-      delivery: true,
-    },
-  });
-  return c.json(orders);
+      include: {
+        customer: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        delivery: true,
+      },
+    });
+    res.json(orders);
+  } catch (error) {
+    console.error('Failed to get orders:', error);
+    res.status(500).json({ error: 'Failed to get orders' });
+  }
 });
 
 // Create a new order
-app.post('/api/orders', async (c) => {
-    const { orderItems, customer, deliveryInfo, total, shippingCost } = await c.req.json();
+app.post('/api/orders', async (req, res) => {
+    const { orderItems, customer, deliveryInfo, total, shippingCost } = req.body;
 
-    // 1. Find or create the customer
-    const customerRecord = await prisma.customer.upsert({
-        where: { phone: customer.phone },
-        update: { name: deliveryInfo.deliveryDetails.name },
-        create: { 
-            phone: customer.phone,
-            name: deliveryInfo.deliveryDetails.name 
-        },
-    });
+    if (!orderItems || !customer || !deliveryInfo) {
+      return res.status(400).json({ error: 'Missing required order data.' });
+    }
 
-    // 2. Create the Order
-    const order = await prisma.order.create({
-        data: {
-            customerId: customerRecord.id,
-            status: 'PENDING', // Or 'ASSIGNED' if a driver is assigned immediately
-            total: total,
-            shippingCost: shippingCost,
-            items: {
-                create: orderItems.map(item => ({
-                    productId: item.id, // Assuming item.id is the productId
-                    quantity: item.quantity,
-                })),
+    try {
+        // 1. Find or create the customer
+        const customerRecord = await prisma.customer.upsert({
+            where: { phone: customer.phone },
+            update: { name: deliveryInfo.deliveryDetails.name },
+            create: { 
+                phone: customer.phone,
+                name: deliveryInfo.deliveryDetails.name 
             },
-            delivery: {
-                create: {
-                    address: deliveryInfo.deliveryDetails.address,
-                    phone: deliveryInfo.deliveryDetails.phone,
-                    references: deliveryInfo.deliveryDetails.references,
-                    name: deliveryInfo.deliveryDetails.name,
-                }
-            }
-        },
-        include: {
-            items: true,
-            delivery: true,
-        }
-    });
+        });
 
-    return c.json(order, 201);
+        // 2. Create the Order
+        const order = await prisma.order.create({
+            data: {
+                customerId: customerRecord.id,
+                status: 'PENDING', // Or 'ASSIGNED' if a driver is assigned immediately
+                total: total,
+                shippingCost: shippingCost,
+                items: {
+                    create: orderItems.map(item => ({
+                        productId: item.id, // Assuming item.id is the productId
+                        quantity: item.quantity,
+                    })),
+                },
+                delivery: {
+                    create: {
+                        address: deliveryInfo.deliveryDetails.address,
+                        phone: deliveryInfo.deliveryDetails.phone,
+                        references: deliveryInfo.deliveryDetails.references,
+                        name: deliveryInfo.deliveryDetails.name,
+                    }
+                }
+            },
+            include: {
+                items: true,
+                delivery: true,
+            }
+        });
+
+        res.status(201).json(order);
+    } catch (error) {
+        console.error('Failed to create order:', error);
+        res.status(500).json({ error: 'Failed to create order' });
+    }
 });
 
 // Update an order (for signature)
-app.put('/api/orders/:orderId', async (c) => {
-  const { orderId } = c.req.param();
-  const { status, signature } = await c.req.json();
+app.put('/api/orders/:orderId', async (req, res) => {
+  const { orderId } = req.params;
+  const { status, signature } = req.body;
 
-  const updateData = {};
-  if (status) {
-    updateData.status = status;
+  try {
+    const updateData = {};
+    if (status) {
+      updateData.status = status;
+    }
+    
+    const orderToUpdate = await prisma.order.findUnique({ where: { id: orderId }});
+    if (!orderToUpdate) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    if (signature) {
+      updateData.delivery = {
+        update: {
+          signature: signature,
+        },
+      };
+    }
+
+    const order = await prisma.order.update({
+      where: { id: orderId },
+      data: updateData,
+    });
+
+    res.json(order);
+  } catch (error) {
+    console.error('Failed to update order:', error);
+    res.status(500).json({ error: 'Failed to update order' });
   }
-  if (signature) {
-    updateData.delivery = {
-      update: {
-        signature: signature,
-      },
-    };
-  }
-
-  const order = await prisma.order.update({
-    where: { id: orderId },
-    data: updateData,
-  });
-
-  return c.json(order);
 });
 
 
 const port = 3000;
-console.log(`Server is running on port ${port}`);
-
-serve({
-  fetch: app.fetch,
-  port,
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
+
