@@ -93,7 +93,38 @@ const VentaMostrador = () => {
     const handleCustomerAdd = (customerData) => setCustomer(customerData);
     const handleSaveDeliveryInfo = (newDeliveryInfo) => setDeliveryInfo(newDeliveryInfo);
 
-    const handlePaymentConfirm = (paymentData) => {
+    const handlePaymentConfirm = async (paymentData) => {
+        if (deliveryInfo.method === 'domicilio') {
+            try {
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        orderItems,
+                        customer,
+                        deliveryInfo,
+                        total,
+                        shippingCost,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const newOrder = await response.json();
+                console.log('Order created:', newOrder);
+
+            } catch (error) {
+                console.error('Failed to create order:', error);
+                // Here you might want to show an error to the user
+                return; // Prevent state from being cleared if API call fails
+            }
+        }
+        
+        // This part runs for both delivery and non-delivery orders
         const newTransaction = {
             type: 'sale',
             description: `Venta de ${orderItems.length} productos`,
@@ -103,9 +134,10 @@ const VentaMostrador = () => {
         };
         setTransactions(prev => [...prev, newTransaction]);
         
+        // Reset state
         setOrderItems([]);
         setCustomer(null);
-        setDeliveryInfo({ method: 'mostrador', collectEmptyJugs: false, deliveryDetails: null }); // Reset deliveryDetails
+        setDeliveryInfo({ method: 'mostrador', collectEmptyJugs: false, deliveryDetails: null });
         setIsPaymentModalOpen(false);
     };
 

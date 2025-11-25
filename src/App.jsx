@@ -7,6 +7,7 @@ import Inventario from "./Gestion/Inventario";
 import Ingresos from "./Gestion/Ingresos";
 import Gastos from "./Gestion/Gastos";
 import VentaMostrador from "./VentaMostrador/VentaMostrador";
+import RepartidorDashboard from "./Repartidor/RepartidorDashboard";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -44,9 +45,14 @@ function App() {
       // Ruta de Venta Mostrador
       <Route path="/venta-mostrador" element={<VentaMostrador />} />
 
+      // Ruta de Repartidor
+      <Route path="/repartidor" element={<RepartidorDashboard />} />
+
     </Routes>
   );
 }
+
+
 
 export default App;
 
