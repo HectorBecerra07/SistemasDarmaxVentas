@@ -22,7 +22,8 @@ import OrderSummaryStepFour from "./pages/OrderSummaryStepFour";
 
 function App() {
   return (
-    <Routes>  
+    <Routes> 
+      // Rutas públicas 
       <Route path="/" element={<DarmaxWelcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
@@ -32,6 +33,7 @@ function App() {
       <Route path="/pedidos/rellenar/entrega" element={<DeliveryMethodStepThree />} />
       <Route path="/pedidos/rellenar/resumen" element={<OrderSummaryStepFour />} />
 
+       // Rutas protegidas (requieren autenticación)
       <Route path="/gestion" element={<GestionDashboard />}>
         <Route index element={<Resumen />} />
         <Route path="inventario" element={<Inventario />} />
@@ -39,10 +41,10 @@ function App() {
         <Route path="gastos" element={<Gastos />} />
       </Route>
       
-      
+      // Ruta de Venta Mostrador
       <Route path="/venta-mostrador" element={<VentaMostrador />} />
 
-
+      // Rutas de autenticación
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
 
