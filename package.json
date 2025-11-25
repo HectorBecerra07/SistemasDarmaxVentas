@@ -1,9 +1,12 @@
 {
-  "name": "darmaxventas",
+  "name": "darmax-monorepo",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
+<<<<<<< HEAD
     "dev": "concurrently \"npm run server\" \"vite\"",
     "server": "node src/server.js",
     "build": "vite build",
@@ -54,5 +57,16 @@
     "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "vite": "^7.2.2"
+=======
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build:client": "npm run build -w client",
+    "seed": "npm run seed -w server",
+    "migrate": "npm run migrate -w server",
+    "install:client": "npm install -w client",
+    "install:server": "npm install -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+>>>>>>> 1397e7043d2e7fdd07a386b3073957247653a069
   }
 }
