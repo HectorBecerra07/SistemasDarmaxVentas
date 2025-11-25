@@ -27,7 +27,7 @@ const DarmaxWelcome = () => {
 
           {/* Título */}
           <h1 className="text-dark dark:text-white tracking-tight text-3xl font-bold leading-tight text-center pb-2 pt-8 sm:text-4xl">
-            Bienvenido a DARMAX
+           DARMAX
           </h1>
 
           {/* Descripción */}
