@@ -8,40 +8,40 @@ const RefillJugStepOne = () => {
 
   const [products, setProducts] = useState([
     {
-      id: "purificada",
-      name: "Garrafón Agua Purificada",
+      id: "ciel",
+      name: "Garrafón Ciel",
       quantity: 1,
       featured: true,
       imageUrl:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuBTRVNohQGHFBIoOVWt09upHMGaDfTjggm9hSZDZPpoIbyFDFwj8Hwls4Bu4Jt0z-I0zlD6rGZuPgFLNAZX_Rp10k7zaOAypOsW0YOx_aesQnxkEq6DyYkUB5CqS1F8a0z5pWE-ypqbtAbNM4Np_GKvHyzEtrjSMe4ix1h8yb-_q3_VmnKyvOOesbq73drHVvURX_RHYCYf5ACdbYjuozn8Qyipi7Of1l4PSlDVfO-NTsy-yTMjkF1gUb1ftXcHZnI_9dpqii7PCB0",
+        "/img/garrafones/ciel.png",
     },
     {
-      id: "alcalina",
-      name: "Garrafón Agua Alcalina",
+      id: "epura",
+      name: "Garrafón Epura",
       quantity: 0,
       imageUrl:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCVAie7BW96pA3Uratok-bSvGNFyqMOvaD3APx6cd8xZ4gbAiKHwbj7OimlIFUfUY-yOlbED284bp8Em0poa_sRIiWRAMMIQsEtqf4IllyH8lgKTL07MSxMN2QsoOogm_La93aEuHIKTuWudeIdNnPnLswoM7XL8ZZU6pkQOe_KMsWu3YOE6-2AfmzMG29kIrMfwHqyL2qUq3yrN71jY4oTWAgIUeUS5R6Aze3mTjF_P7ACkzk9xSWGq7H0W1_VDZHpc5-icAGyIEo",
+        "/img/garrafones/epura.png",
     },
     {
-      id: "sales",
-      name: "Garrafón con Sales",
+      id: "bonafon",
+      name: "Garrafón Bonafon",
       quantity: 0,
       imageUrl:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCmKKVAAtGmsQig5k97WcD6AyML42G7QreNcsx40TC9bMGtmTvom0uVtUWtu3TLN3hXPMUP-SSjDso_SIX26fDEkAAYUenF7GDxxNj8PJxV3vESgWsvuc1m1qEVijARm8W75QlaUrOlYmGNWPDVrDJG-YtUzMLbuPUXhb73RUe9yC9WahHJJYKaFksqDzGlBBb9lzp62cv85L1yIAGgdUrK24nXGQwy_NemDtjqSiIGOeyMROiLj0VRTcKMPPzFdCLJ7fNnkX3LB5Q",
+        "https://http2.mlstatic.com/D_NQ_NP_2X_641991-MLA96179176023_102025-T.webp",
     },
     {
-      id: "mini",
-      name: "Mini Garrafón 10L",
+      id: "Darmax",
+      name: "Garrafón Darmax",
       quantity: 0,
       imageUrl:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCPxO8yyHL_taBt223sONBdpSbE5Vi5QmADdTFJBPSqLUS3j_kipF_63ooBdL3k742PmZy90D1C-XH2N-2D8fSYWZXX4ZdxGnjrEJQn5Aqryo04kzgdo7bWVNTyZNE2Qj9vGtSpgYw-uzff0cJGD2FEo6FyFxiAFfpPLSjLRKcN9_p5q6h2RyG02ieunUVHaN2ZSwvACX73X8I-8kFTDbWY_FGkU3ky5HY0ss8cZrrm4jNRzMfeMNoe200cOJvFotwdBxrqovHhc2Q",
+        "/img/garrafones/turquesa.png",
     },
     {
-      id: "premium",
-      name: "Garrafón Premium",
+      id: "10Litros",
+      name: "Garrafón 10L",
       quantity: 0,
       imageUrl:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuAJZgkmppkAPCdnjC_iE9fF46ysHE_0SRU8sTjFAljGWwODVVp_pyjSz6CIjEZaGhfwfjneINMAh44F7_rVW59wLUXmevMXtAaCdpnD0UY8CW5cKKbIH1frc4TWw4xr8jDKI5ilQdpZNPWoXIj_XZSNFwhFhMJ80ZeCf0nJtuFe58sFhXgMr2iksyLnuOu_FrEosFF-mgJoz7kJ2STQsSXydqF-F8txCaynxhT1rSjqT-612CqD-tcvKQnKVN-xluo9SI-5t04XcrM",
+        "https://i5.walmartimages.com/asr/477a4697-343e-4479-b790-3e20d7d2c4a8.85794c880e81af65b362fa88a710128c.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
     },
   ]);
 

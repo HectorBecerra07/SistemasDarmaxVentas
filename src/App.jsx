@@ -14,6 +14,8 @@ import OrderSelection from "./pages/OrderSelection";
 import RefillJugStepOne from "./pages/RefillJugStepOne";
 import RefillAssignStepTwo from "./pages/RefillAssignStepTwo";
 import DeliveryMethodStepThree from "./pages/DeliveryMethodStepThree";
+import OrderSummaryStepFour from "./pages/OrderSummaryStepFour";
+
 
 
 
@@ -27,6 +29,7 @@ function App() {
       <Route path="/pedidos/rellenar" element={<RefillJugStepOne />} />
       <Route path="/pedidos/rellenar/asignar" element={<RefillAssignStepTwo />} />
       <Route path="/pedidos/rellenar/entrega" element={<DeliveryMethodStepThree />} />
+      <Route path="/pedidos/rellenar/resumen" element={<OrderSummaryStepFour />} />
 
       <Route path="/gestion" element={<GestionDashboard />}>
         <Route index element={<Resumen />} />
