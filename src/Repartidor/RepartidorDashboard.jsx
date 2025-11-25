@@ -2,24 +2,24 @@ import { useState, useEffect } from 'react';
 import Mapa from './components/Mapa';
 import PedidosAsignados from './components/PedidosAsignados';
 import DetallePedido from './components/DetallePedido';
+import { useAuth } from '../context/AuthContext';
+import apiClient from '../api/apiClient';
 
 const RepartidorDashboard = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [driverPosition, setDriverPosition] = useState(null);
     const [error, setError] = useState(null);
-
-    // Hardcoded driver ID for now
-    const driverId = 'clwodad0s000008l4c1735z4a'; // Replace with actual driver ID from auth
+    const { user } = useAuth(); // Get user from auth context
 
     useEffect(() => {
+        if (!user) return;
+
         const fetchOrders = async () => {
             try {
-                const response = await fetch(`/api/drivers/${driverId}/orders`);
-                if (!response.ok) {
-                    throw new Error('No se pudieron cargar los pedidos.');
-                }
-                const data = await response.json();
+                // Use user.id as the driverId
+                const response = await apiClient.get(`/drivers/${user.id}/orders`);
+                const data = response.data;
                 // Placeholder for lat/lng
                 const ordersWithCoords = data.map(order => ({
                     ...order,
@@ -31,12 +31,13 @@ const RepartidorDashboard = () => {
                 }))
                 setOrders(ordersWithCoords);
             } catch (err) {
-                setError(err.message);
+                setError('No se pudieron cargar los pedidos.');
+                console.error(err);
             }
         };
 
         fetchOrders();
-    }, [driverId]);
+    }, [user]);
 
     useEffect(() => {
         // Get driver's location
@@ -63,19 +64,13 @@ const RepartidorDashboard = () => {
 
     const handleUpdateOrder = async (orderId, updateData) => {
         try {
-            const response = await fetch(`/api/orders/${orderId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updateData),
-            });
-            if (!response.ok) {
-                throw new Error('Error al actualizar el pedido.');
-            }
-            const updatedOrder = await response.json();
+            const response = await apiClient.put(`/orders/${orderId}`, updateData);
+            const updatedOrder = response.data;
             setOrders(prevOrders => prevOrders.filter(o => o.id !== orderId));
             setSelectedOrder(null);
         } catch (err) {
-            setError(err.message);
+            setError('Error al actualizar el pedido.');
+            console.error(err);
         }
     };
 

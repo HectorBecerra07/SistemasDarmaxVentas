@@ -1,12 +1,33 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Iniciar sesión");
+    setError("");
+    try {
+      const user = await login(email, password);
+      // Redirect based on user role
+      if (user.role === 'ADMIN') {
+        navigate("/gestion");
+      } else if (user.role === 'DRIVER') {
+        navigate("/repartidor");
+      } else {
+        //- Fallback for other roles or no role
+        navigate("/"); 
+      }
+    } catch (err) {
+      setError("Failed to log in. Please check your credentials.");
+      console.error(err);
+    }
   };
 
   return (
@@ -44,6 +65,8 @@ const Login = () => {
                 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 
                 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </label>
 
@@ -60,6 +83,8 @@ const Login = () => {
                   focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 
                   dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -72,6 +97,11 @@ const Login = () => {
                 </button>
               </div>
             </label>
+            
+            {/*- Display error message */}
+            {error && (
+                <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
 
             {/* Recordarme */}
             <div className="flex items-center">

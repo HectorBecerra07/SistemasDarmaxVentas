@@ -18,13 +18,12 @@ import RefillAssignStepTwo from "./pages/RefillAssignStepTwo";
 import DeliveryMethodStepThree from "./pages/DeliveryMethodStepThree";
 import OrderSummaryStepFour from "./pages/OrderSummaryStepFour";
 
-
-
+import PrivateRoute from "./components/common/PrivateRoute";
 
 function App() {
   return (
-    <Routes> 
-      // Rutas públicas 
+    <Routes>
+      {/* Rutas públicas */}
       <Route path="/" element={<DarmaxWelcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Register />} />
@@ -34,25 +33,42 @@ function App() {
       <Route path="/pedidos/rellenar/entrega" element={<DeliveryMethodStepThree />} />
       <Route path="/pedidos/rellenar/resumen" element={<OrderSummaryStepFour />} />
 
-       // Rutas protegidas (requieren autenticación)
-      <Route path="/gestion" element={<GestionDashboard />}>
+      {/* Rutas protegidas (requieren autenticación) */}
+      <Route
+        path="/gestion"
+        element={
+          <PrivateRoute roles={['ADMIN']}>
+            <GestionDashboard />
+          </PrivateRoute>
+        }
+      >
         <Route index element={<Resumen />} />
         <Route path="inventario" element={<Inventario />} />
         <Route path="ingresos" element={<Ingresos />} />
         <Route path="gastos" element={<Gastos />} />
       </Route>
-      
-      // Ruta de Venta Mostrador
-      <Route path="/venta-mostrador" element={<VentaMostrador />} />
 
-      // Ruta de Repartidor
-      <Route path="/repartidor" element={<RepartidorDashboard />} />
+      {/* Ruta de Venta Mostrador */}
+      <Route
+        path="/venta-mostrador"
+        element={
+          <PrivateRoute roles={['ADMIN', 'DRIVER']}>
+            <VentaMostrador />
+          </PrivateRoute>
+        }
+      />
 
+      {/* Ruta de Repartidor */}
+      <Route
+        path="/repartidor"
+        element={
+          <PrivateRoute roles={['DRIVER']}>
+            <RepartidorDashboard />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
 
-
-
 export default App;
-

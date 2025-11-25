@@ -9,6 +9,8 @@ import CashDrawerModal from "./CashDrawerModal";
 import CloseRegisterModal from "./CloseRegisterModal";
 import StartDayModal from "./StartDayModal";
 
+import apiClient from "../api/apiClient";
+
 const VentaMostrador = () => {
     // Session state
     const [isSessionActive, setIsSessionActive] = useState(false);
@@ -96,25 +98,15 @@ const VentaMostrador = () => {
     const handlePaymentConfirm = async (paymentData) => {
         if (deliveryInfo.method === 'domicilio') {
             try {
-                const response = await fetch('/api/orders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        orderItems,
-                        customer,
-                        deliveryInfo,
-                        total,
-                        shippingCost,
-                    }),
+                const response = await apiClient.post('/orders', {
+                    orderItems,
+                    customer,
+                    deliveryInfo,
+                    total,
+                    shippingCost,
                 });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const newOrder = await response.json();
+                const newOrder = response.data;
                 console.log('Order created:', newOrder);
 
             } catch (error) {
